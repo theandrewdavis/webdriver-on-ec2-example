@@ -24,7 +24,7 @@ class Downloader
     path = File.join(target_dir, url.slice(/([^\/]+)$/, 1))
     open(url) do |stream|
       File.open(path, 'wb') { |file| file.puts(stream.read) }
-    end
+    end unless File.exists?(path)
   rescue OpenURI::HTTPError
     @failed << url
   end
@@ -38,9 +38,9 @@ class Downloader
   end
 end
 
-usage = 'Usage: ruby downloader.rb urls.json path_to_folder'
-abort(usage) if ARGV[0].nil? or ARGV[1].nil?
-abort('URL file does not exist') unless File.exists? ARGV[0]
+USAGE_NOTE = 'Usage: ruby downloader.rb input.json path_to_folder'
+abort(USAGE_NOTE) unless ARGV[0] and ARGV[1]
+abort('Input file does not exist') unless File.exists? ARGV[0]
 Dir.mkdir(ARGV[1]) unless Dir.exists? ARGV[1]
 
 urls = JSON.parse(File.open(ARGV[0]).read)
