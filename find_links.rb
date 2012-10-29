@@ -64,6 +64,7 @@ class EpisodeListPage
 	def current_page_video_links
 		@browser.find_elements(:css, '.episode h2 a').map do |link|
 			title = link.attribute('href').slice(/\/([^\/]+)$/, 1)
+			title.gsub!(/^\d+/) { |number| '%03d' % number }
 			title_to_video_link(title)
 		end
 	end
