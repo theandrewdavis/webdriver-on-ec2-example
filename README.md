@@ -6,7 +6,7 @@ I love [WebDriver](http://seleniumhq.org/). I've used it at [Appian](http://www.
 
 In preparation for a trip, I wrote a script to scrape videos from Railscasts using a headless browser on my EC2 instance. What follows is a run-down of that process.
 
-### WebDriver on EC2 Setup ###
+### Setting up WebDriver on EC2  ###
 
 Open the [EC2 Dashboard](console.aws.amazon.com/ec2/) and lanch a new Ubuntu instance. SSH into the new instance with
 
@@ -14,7 +14,7 @@ Open the [EC2 Dashboard](console.aws.amazon.com/ec2/) and lanch a new Ubuntu ins
 ssh -i privatekey.pem ubuntu@instanceaddress.amazonaws.com
 ```
 
-and install [xvfb](http://en.wikipedia.org/wiki/Xvfb), [Firefox](http://www.mozilla.org/en-US/firefox/new/), [rvm](https://rvm.io/), and build tools with
+and install the dependencies ([xvfb](http://en.wikipedia.org/wiki/Xvfb), [Firefox](http://www.mozilla.org/en-US/firefox/new/), build tools, [rvm](https://rvm.io/), headless, and [webdriver-selenium](http://selenium.googlecode.com/svn/trunk/docs/api/rb/index.html)) with
 
 ```
 sudo apt-get update
@@ -24,7 +24,7 @@ source /usr/local/rvm/scripts/rvm
 rvmsudo gem install --no-ri --no-rdoc headless selenium-webdriver
 ```
 
-That covers all the dependencies for WebDriver. A simple example follows
+Now you can run WebDriver from Ruby. An example follows
 
 ```ruby
 require 'headless'
@@ -59,3 +59,5 @@ The resulting file, `videos.json` will contain links to all Railscasts videos. Y
 ```
 ruby downloader.rb videos.json target_folder
 ```
+
+It will skip already-downloaded files so you can use it to only download new episodes.
